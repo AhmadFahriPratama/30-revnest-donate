@@ -37,12 +37,18 @@ function getCardClass(cardStyle: ThemeConfig["cardStyle"]) {
 export function StatsCard({ stat, theme }: StatsCardProps) {
   return (
     <article
-      className={`rounded-3xl p-6 ${getCardClass(theme.cardStyle)}`}
+      className={`group relative overflow-hidden rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl ${getCardClass(theme.cardStyle)}`}
       style={{
         boxShadow: theme.cardStyle === "shadow" || theme.cardStyle === "accent" ? `0 18px 50px -35px ${theme.borderStrong}` : undefined,
       }}
     >
-      <div className="flex items-start justify-between gap-4">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: `linear-gradient(145deg, ${theme.primarySoft} 0%, transparent 48%, ${theme.secondarySoft} 100%)`,
+        }}
+      />
+      <div className="relative flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-slate-500">{stat.label}</p>
           <p className="mt-4 text-3xl font-bold tracking-tight text-slate-950">{stat.value}</p>
@@ -51,12 +57,13 @@ export function StatsCard({ stat, theme }: StatsCardProps) {
           {stat.trend}
         </span>
       </div>
-      <div className="mt-6 h-1.5 rounded-full" style={{ backgroundColor: theme.surfaceStrong }}>
+      <div className="relative mt-6 h-1.5 overflow-hidden rounded-full" style={{ backgroundColor: theme.surfaceStrong }}>
         <div
-          className="h-full rounded-full"
+          className="animate-shimmer h-full rounded-full"
           style={{
             width: stat.trend.trim().startsWith("-") ? "34%" : "68%",
             backgroundImage: `linear-gradient(90deg, ${theme.primary} 0%, ${theme.secondary} 100%)`,
+            backgroundSize: "180% 100%",
           }}
         />
       </div>
